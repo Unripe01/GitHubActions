@@ -4,11 +4,6 @@ on:
   workflow_dispatch:
   push:
   pull_request:
-permissions:
-  contents: read
-  # Needed for the add label for pull_request action
-  pull-requests: write
-
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -31,7 +26,7 @@ jobs:
           # プルリクエストにエラーのラベルを付ける
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.rest.issues.addLabels({
+            github.rest.pulls.addLabels({
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
