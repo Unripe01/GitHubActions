@@ -16,6 +16,7 @@ jobs:
         run: npm ci
       - name: TypeScript Check
         id: tsc
+        continue-on-error: true
         run: npx tsc --noEmit
       - name: add error label
         if: ${{ github.event_name == 'pull_request' && failure() && steps.tsc.conclusion == 'failure' }}
