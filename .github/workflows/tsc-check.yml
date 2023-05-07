@@ -15,4 +15,22 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: TypeScript Check
+        id: tsc
         run: npx tsc --noEmit
+      - name: add error label
+        permissions:
+          contents: read
+          pull-requests: write
+        if: ${{ github.event_name == 'pull_request' && failure() && steps.tsc.conclusion == 'failure' }}
+        uses: actions/github-script@v4
+        with:
+          # プルリクエストにエラーのラベルを付ける
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['error']
+            })
+          
