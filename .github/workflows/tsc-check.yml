@@ -21,7 +21,7 @@ jobs:
       - name: add error label
         # conclusion は、continue-on-error: true を適用しているためにsuccess になる。そのため、outcome でエラーを検知する
         if: ${{ github.event_name == 'pull_request' && steps.tsc.outcome == 'failure' }}
-        uses: actions/github-script@v4
+        uses: actions/github-script@v5
         with:
           # プルリクエストにエラーのラベルを付ける
           github-token: ${{ secrets.GITHUB_TOKEN }}
