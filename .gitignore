@@ -1,0 +1,5 @@
+#
+# node プロジェクト用の .ignore 設定
+#
+
+node_modules
