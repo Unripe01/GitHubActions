@@ -31,5 +31,7 @@ jobs:
               repo: context.repo.repo,
               labels: ['bug']
             })
-        run: exit -1
+      - name: check for errors
+        if: ${{ steps.tsc.outcome == 'failure' }}
+        run: exit 1
           
