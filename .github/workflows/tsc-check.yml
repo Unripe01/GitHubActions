@@ -19,8 +19,8 @@ jobs:
         continue-on-error: true
         run: npx tsc --noEmit
       - name: add error label
-        # conclusionは、continue-on-error: true を適用しているためにsuccess になる。そのため、outcomeとfailure() でエラーを検知する
-        if: ${{ github.event_name == 'pull_request' && failure() && steps.tsc.outcome == 'failure' }}
+        # conclusion は、continue-on-error: true を適用しているためにsuccess になる。そのため、outcome でエラーを検知する
+        if: ${{ github.event_name == 'pull_request' && steps.tsc.outcome == 'failure' }}
         uses: actions/github-script@v4
         with:
           # プルリクエストにエラーのラベルを付ける
