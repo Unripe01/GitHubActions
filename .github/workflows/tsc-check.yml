@@ -1,9 +1,9 @@
 name: "CI"
 run-name: ${{ github.actor }} runs TSC Check 🍅
 on:
+  workflow_dispatch:
   push:
-    branches:
-      - master
+  pull_request:
 jobs:
   build:
     runs-on: ubuntu-latest
