@@ -4,6 +4,11 @@ on:
   workflow_dispatch:
   push:
   pull_request:
+permissions:
+  contents: read
+  # Needed for the add label for pull_request action
+  pull-requests: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -15,4 +20,24 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: TypeScript Check
+        id: tsc
+        continue-on-error: true
         run: npx tsc --noEmit
+      - name: add error label
+        # conclusion は、continue-on-error: true を適用しているためにsuccess になる。そのため、outcome でエラーを検知する
+        if: ${{ github.event_name == 'pull_request' && steps.tsc.outcome == 'failure' }}
+        uses: actions/github-script@v6
+        with:
+          # プルリクエストにエラーのラベルを付ける
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            github.rest.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['bug']
+            })
+      - name: check for errors
+        if: ${{ steps.tsc.outcome == 'failure' }}
+        run: exit 1
+          

@@ -10,7 +10,7 @@ function main() {
 
 //型エラーを起こす関数
 function typeError() {
-    // console.log(returnWord(123));
+    console.log(returnWord("123"));
 }
 
 
